@@ -1,0 +1,105 @@
+<div fxLayout="column" style="background-color:;" fxFill>
+
+  <!-- SIDENAV CONTAINER -->
+  <mat-sidenav-container style="">
+
+    <mat-sidenav #snav [mode]="sideNavControlMode()" [opened]="sideNavControlOpened()" fxLayout="column" style=";">
+
+      <!-- TOP MENU -->
+      <mat-toolbar color="secondary" class="">
+          <h1>Maria e Rocha</h1>
+      </mat-toolbar>
+
+      <div fxFlex style="; overflow-y: auto; ">
+          <mat-nav-list>
+            <h3 matSubheader>Folders</h3>
+            <a mat-list-item href="#" *ngFor="let item of [0,1,2,3,4,5,6,7,8,9]">
+              <mat-icon matListIcon>menu</mat-icon> Link 1
+            </a>
+            <mat-divider></mat-divider>
+            <h3 matSubheader>Folders</h3>
+            <a mat-list-item href="#">
+              <mat-icon matListIcon>menu</mat-icon> Link 1
+            </a>
+            <a mat-list-item href="#">
+              <mat-icon matListIcon>menu</mat-icon> Link 1
+            </a>
+          </mat-nav-list>
+
+    </div>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content fxLayout="column" style="">
+
+      <!-- TOP MENU -->
+      <mat-toolbar color="primary" class="mat-elevation-z8">
+          <button mat-button mat-icon-button fxShow fxHide.gt-sm style="margin-right: 20px" (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+          <span class="example-fill-remaining-space"></span>
+
+          <button [matMenuTriggerFor]="appMenu" class="btn-clean">
+            <img src="http://img2.zergnet.com/1117421_300.jpg" width="35" class="img-rounded">
+          </button>
+          <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item> 
+              <mat-icon> dialpad </mat-icon>
+              <span> Rediasd fsd fsd fsd fsdl </span>
+            </button>
+            <button mat-menu-item> Help </button>
+          </mat-menu>
+      </mat-toolbar>
+
+      <div fxFlex style="; overflow-y: auto;">
+
+        <mat-toolbar color="primary">
+          <h2>Usuários</h2>
+          <span class="example-fill-remaining-space"></span>
+          <button mat-button mat-raised-button color="primary" (click)="openNewUser(null)">Novo Usuário</button>
+        </mat-toolbar>
+
+        <div fxLayout="row" style="; padding: 30px; justify-content: center;">
+
+            <!-- TABLE CONTAINER -->
+            <div style="position: relative" class="mat-elevation-z3" fxFlex="40em">
+              
+              <div class="example-loading-shade" *ngIf="isLoading">
+                  <mat-spinner [diameter]="50"></mat-spinner>
+              </div>
+
+              <mat-table #table [dataSource]="dataSource" matSort>
+                  <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                      <mat-cell *matCellDef="let user">{{ user.name }}</mat-cell>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="created">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
+                      <mat-cell *matCellDef="let user">{{ user.created }}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="actions">
+                      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                      <mat-cell *matCellDef="let user" class="text-right">
+                        <button mat-icon-button [matMenuTriggerFor]="rowMenu" >
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #rowMenu="matMenu" [overlapTrigger]="true" xPosition="before">
+                          <button mat-menu-item> 
+                            <mat-icon>mode_edit</mat-icon> Editar
+                          </button>
+                        </mat-menu>
+                      </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+
+              <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
+            </div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

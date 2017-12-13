@@ -1,0 +1,12 @@
+html, body {
+	height: 100%;
+	margin: 0!important;
+	background-color: blue;
+	padding: 0;
+}
+.text-right {
+ text-align: right!important;
+}
+.text-center {
+	text-align: center;
+}
