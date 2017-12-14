@@ -1,14 +1,21 @@
 <form [formGroup]="userForm" (submit)="save()">
-	<mat-dialog-content>
-		<mat-form-field class="example-full-width">
+	
+	<h2 mat-dialog-title>Adicionar Usuário</h2>
+	<mat-dialog-content fxLayout="column">
+		
+		<mat-form-field>
 			<input matInput placeholder="*Name" formControlName="name">
 		</mat-form-field>
+		<mat-form-field>
+			<input matInput placeholder="*Biriba">
+		</mat-form-field>
 
-		<div *ngIf="isLoading">Salvando...</div>
+		<mat-progress-bar mode="indeterminate" color="accent" *ngIf="isLoading"></mat-progress-bar>
 
 	</mat-dialog-content>
-	<mat-dialog-actions>
+	<mat-dialog-actions fxLayout="row" style="justify-content: flex-end">
 		<button mat-dialog-close mat-button [disabled]="isLoading"> Cancelar</button>
-		<button type="submit" mat-button [disabled]="isLoading"> Salvar</button>
+		<button type="submit" mat-raised-button color="primary" [disabled]="isLoading"> Salvar</button>
 	</mat-dialog-actions>
+
 </form>

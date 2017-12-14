@@ -25,11 +25,12 @@ import {MediaChange, ObservableMedia} from "@angular/flex-layout";
 
 // Components
 import { UserAddComponent } from '../user-add/user-add.component';
+import { PiriComponent } from '../piri/piri.component';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss']
+  styleUrls: ['./users-list.component.scss'],
 })
 export class UsersListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -91,7 +92,7 @@ export class UsersListComponent implements OnInit {
   openNewUser(userId: number) {
 
     let dialogRef = this.dialog.open(UserAddComponent, {
-      width: '300px',
+      width: '600px',
       data: {
         userId: userId,
         refreshTable: this.newItem

@@ -32,8 +32,10 @@
 
     <mat-sidenav-content fxLayout="column" style="">
 
+      <app-piri></app-piri>
+
       <!-- TOP MENU -->
-      <mat-toolbar color="primary" class="mat-elevation-z8">
+      <mat-toolbar color="primary" class="mat-elevation-z3">
           <button mat-button mat-icon-button fxShow fxHide.gt-sm style="margin-right: 20px" (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
           <span class="example-fill-remaining-space"></span>
 
@@ -49,18 +51,34 @@
           </mat-menu>
       </mat-toolbar>
 
-      <div fxFlex style="; overflow-y: auto;">
 
-        <mat-toolbar color="primary">
+      <div fxFlex style="overflow-y: auto;">
+
+        <mat-toolbar color="primary" style="margin-bottom: 40px">
           <h2>Usuários</h2>
           <span class="example-fill-remaining-space"></span>
           <button mat-button mat-raised-button color="primary" (click)="openNewUser(null)">Novo Usuário</button>
         </mat-toolbar>
 
-        <div fxLayout="row" style="; padding: 30px; justify-content: center;">
+        <mat-card style="margin: 0 40px 40px 40px">
+          <mat-card-content fxLayout="row" fxLayoutGap="40px">
+            <div fxFlex>
+              <div fxLayout="column" fxLayoutAlign="center start">
+                <mat-form-field fxFlex fxFill>
+                  <input matInput placeholder="Palavra Chave">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="center center" style="">
+              <button mat-raised-button color="accent"><mat-icon>search</mat-icon> Pesquisar</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div fxLayout="row" style="justify-content: center;" style="margin: 0 40px 40px 40px">
 
             <!-- TABLE CONTAINER -->
-            <div style="position: relative" class="mat-elevation-z3" fxFlex="40em">
+            <div style="position: relative" class="mat-elevation-z4" fxFlex>
               
               <div class="example-loading-shade" *ngIf="isLoading">
                   <mat-spinner [diameter]="50"></mat-spinner>
@@ -86,6 +104,9 @@
                         <mat-menu #rowMenu="matMenu" [overlapTrigger]="true" xPosition="before">
                           <button mat-menu-item> 
                             <mat-icon>mode_edit</mat-icon> Editar
+                          </button>
+                          <button mat-menu-item> 
+                            <mat-icon>mode_edit</mat-icon> Remover
                           </button>
                         </mat-menu>
                       </mat-cell>

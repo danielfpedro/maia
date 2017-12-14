@@ -13,31 +13,43 @@ import { MatTableModule, MatPaginatorModule } from '@angular/material'
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 // My Components
-import { LayoutComponent } from './layout/layout.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
 import { UserAddComponent } from './users/user-add/user-add.component';
+import { PiriComponent } from './users/piri/piri.component';
+
+// import { Route } from './core/route.service';
+import { ShellComponent } from './core/shell/shell.component';
+
+import { ConsoleModule } from './console/console.module';
 
 // Services
 import { UsersService } from './users/shared/users.service';
 
-const appRoutes: Routes = [
-  { path: '', component: LayoutComponent, pathMatch: 'full' },
-	// Users
-  { path: 'users', component: UsersListComponent},
+// const appRoutes: Routes = [
+//   { path: '', component: LayoutComponent, pathMatch: 'full' },
+// 	// Users
+//   { path: 'users', component: UsersListComponent},
 
-];	
+// ];	
+
+const appRoutes: Routes = [
+  // { path: '', redirectTo: '/users', pathMatch: 'full' },
+  { path: 'console', loadChildren: './console/console.module@ConsoleModule' },
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     // My Components
-    LayoutComponent,
     UsersListComponent,
-    UserAddComponent
+    UserAddComponent,
+    PiriComponent,
+    ShellComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+        ConsoleModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
     HttpClientModule,
     FormsModule,
