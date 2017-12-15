@@ -6,7 +6,7 @@
  * To optimize your production builds, you should only import the components used in your app.
  */
 
-import { MatPaginatorIntlBr } from './shared/mat-paginator-intl-br';
+import { MatPaginatorIntlBr } from './mat-paginator-intl-br';
 
 import { MatPaginatorIntl } from '@angular/material';
 
