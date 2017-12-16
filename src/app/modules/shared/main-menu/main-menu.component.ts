@@ -7,16 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainMenuComponent implements OnInit {
 
-  items: any;  
+  menuItems: any[] = [];  
 
   constructor() { }
 
   ngOnInit() {
-    this.items = [
+    this.createMenuItems();
+  }
+
+  createMenuItems() {
+    this.menuItems = [
       {
-        label: 'Clientes'
-      }
-    ];  
+        text: 'Cadastros',
+        items: [
+          {
+            text: 'Clientes',
+            href: '/clientes',
+            icon: 'people'
+          },
+        ]
+      },
+    ];
   }
 
 }

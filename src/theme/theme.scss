@@ -1,0 +1,23 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+
+// stylelint-disable-next-line selector-max-universal
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  // background-color: green;
+  margin: 0;
+  height: 100%;
+}
+
+.main-content {
+  overflow-y: auto;
+}
+.fill-remaining-space {
+  flex: 1 1 auto;
+}

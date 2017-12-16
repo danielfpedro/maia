@@ -1,0 +1,32 @@
+.btn-clean {
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+}
+.btn-clean:focus {
+  outline: 0;
+}
+.img-rounded {
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+
+    border: 3px solid #6e7ed3;
+}
+
+/*.overlay-container {
+  position: relative;
+}
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}*/

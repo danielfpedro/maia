@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" class="mat-elevation-z3">
+  <!-- Button to apen side nav only visible mobile -->
+  <button mat-button mat-icon-button fxShow fxHide.gt-sm style="margin-right: 20px" (click)="snav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <span class="fill-remaining-space"></span>
+
+  <button [matMenuTriggerFor]="appMenu" class="btn-clean">
+    <img src="http://img2.zergnet.com/1117421_300.jpg" width="35" class="img-rounded">
+  </button>
+  <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item> 
+      <mat-icon> settings </mat-icon>
+      <span> Configurações de conta </span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item> 
+      <mat-icon> power_settings_new </mat-icon>
+      <span> Sair </span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

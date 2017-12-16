@@ -1,30 +1,27 @@
 import { NgModule } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
+//import { CommonModule } from '@angular/common';
 
 // Layout
-import { DefaultLayoutComponent } from '../../layouts/default-layout.component';
-
+import { DefaultLayoutComponent } from '../../layouts/default/default-layout.component';
 /**
  * Modules
  */
 import { SharedModule } from '../shared/shared.module';
-
 /**
  * Components
  */
 import { ClientesListComponent } from './clientes-list/clientes-list.component';
 import { ClientesAddComponent } from './clientes-add/clientes-add.component';
 
+import { MaterialModule } from '../shared/material.module';
+
+//import { BrowserModule } from '@angular/platform-browser';
+
 /**
  * Router
  */
-// // import { ClientesRoutingModule } from './clientes-routing.module';
-
-const routesClientes: Routes = [
-  // { path: '', redirectTo: '/users', pathMatch: 'full' },
-  { path: '', component: ClientesListComponent },
-];
 const routes: Routes = [
   {
     path: 'clientes',
@@ -34,7 +31,7 @@ const routes: Routes = [
         path: '',
         component: DefaultLayoutComponent,
         children: [
-        { path: 'list', component: ClientesListComponent },
+        { path: '', component: ClientesListComponent },
         ]
       },
     ]
@@ -44,15 +41,14 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    // BrowserModule,
+    // CommonModule,
     RouterModule.forRoot(routes),
     SharedModule,
-    // ClientesRoutingModule
-    // Routing
-    // ConsoleRounting
+    // MaterialModule
   ],
   exports: [RouterModule],
   declarations: [
-    // MainMenuComponent,
     // Layout
     DefaultLayoutComponent,
     // Components
@@ -60,7 +56,6 @@ const routes: Routes = [
     ClientesAddComponent
   ],
   providers: [
-    // ClientesService
   ]
 })
 export class ClientesModule { }

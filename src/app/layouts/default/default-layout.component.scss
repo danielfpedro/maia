@@ -1,0 +1,12 @@
+$mat-sidenav-width: 260px;
+
+mat-sidenav-container {
+	// background-color: red;	
+}
+
+mat-sidenav {
+	width: $mat-sidenav-width;
+}
+.menu-container {
+	overflow-y: auto;
+}
