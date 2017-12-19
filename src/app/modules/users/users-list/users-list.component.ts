@@ -28,103 +28,103 @@ import { UserAddComponent } from '../user-add/user-add.component';
 import { PiriComponent } from '../piri/piri.component';
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss'],
+selector: 'app-users-list',
+templateUrl: './users-list.component.html',
+styleUrls: ['./users-list.component.scss'],
 })
 export class UsersListComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+@ViewChild(MatPaginator) paginator: MatPaginator;
+@ViewChild(MatSort) sort: MatSort;
 
-  isLoading = false;
-  displayedColumns = ['name', 'created', 'actions'];
+isLoading = false;
+displayedColumns = ['name', 'created', 'actions'];
 
-  dataSource = new MatTableDataSource();
-  resultsLength:number = 0;
-  newItem: Subject<any>;
+dataSource = new MatTableDataSource();
+resultsLength:number = 0;
+newItem: Subject<any>;
 
-  exampleDatabase: ExampleHttpDao;
+exampleDatabase: ExampleHttpDao;
 
-  constructor(
-    private http: HttpClient,
-    private dialog: MatDialog,
-    public usersService: UsersService,
-    public media: ObservableMedia
-  ) { }
+constructor(
+  private http: HttpClient,
+  private dialog: MatDialog,
+  public usersService: UsersService,
+  public media: ObservableMedia
+) { }
 
-  ngOnInit() {
+ngOnInit() {
 
-    this.sort.active = 'name';
-    this.sort.direction = 'asc';
+  this.sort.active = 'name';
+  this.sort.direction = 'asc';
 
-    this.exampleDatabase = new ExampleHttpDao(this.usersService, this.http);
+  this.exampleDatabase = new ExampleHttpDao(this.usersService, this.http);
 
-    this.newItem = new Subject<any>();
+  this.newItem = new Subject<any>();
 
-    this.sort.sortChange.subscribe(() => {
-      console.log('Active', this.sort.active);
+  this.sort.sortChange.subscribe(() => {
+    console.log('Active', this.sort.active);
+  });
+
+  this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+  Observable.merge(this.sort.sortChange, this.newItem)
+    .subscribe(() => {
+      this.paginator.pageIndex = 0;
     });
 
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    Observable.merge(this.sort.sortChange, this.newItem)
-      .subscribe(() => {
-        this.paginator.pageIndex = 0;
-      });
-
-
-    Observable.merge(this.newItem, this.sort.sortChange, this.paginator.page)
-      .startWith(null)
-      .switchMap(() => {
-        this.isLoading = true;
-        return this.exampleDatabase.getUsers(this.sort.active, this.sort.direction, this.paginator.pageIndex);
-      })
-      .map(data => {
-        this.isLoading = false;
-        this.resultsLength = data.total_count;
-        return data.items;
-      })
-      .subscribe(data => {
-        this.dataSource.data = data;
-      });
-  }
-
-  openNewUser(userId: number) {
-
-    let dialogRef = this.dialog.open(UserAddComponent, {
-      width: '600px',
-      data: {
-        userId: userId,
-        refreshTable: this.newItem
-      }
+  Observable.merge(this.newItem, this.sort.sortChange, this.paginator.page)
+    .startWith(null)
+    .switchMap(() => {
+      this.isLoading = true;
+      return this.exampleDatabase.getUsers(this.sort.active, this.sort.direction, this.paginator.pageIndex);
+    })
+    .map(data => {
+      this.isLoading = false;
+      this.resultsLength = data.total_count;
+      return data.items;
+    })
+    .subscribe(data => {
+      this.dataSource.data = data;
     });
+}
 
-    dialogRef.afterClosed().subscribe(result => {
-    });
+openNewUser(userId: number) {
 
-  }
+  let dialogRef = this.dialog.open(UserAddComponent, {
+    width: '600px',
+    data: {
+      userId: userId,
+      refreshTable: this.newItem
+    }
+  });
 
-  sideNavControlOpened() {
-    return (this.media.isActive('gt-sm'));
-  }
-  sideNavControlMode() {
-    return (this.media.isActive('gt-sm')) ? 'side' : 'over';
-  }
+  dialogRef.afterClosed().subscribe(result => {
+  });
+
+}
+
+sideNavControlOpened() {
+  return (this.media.isActive('gt-sm'));
+}
+sideNavControlMode() {
+  return (this.media.isActive('gt-sm')) ? 'side' : 'over';
+}
 }
 
 export interface UsersApi {
-  items: User[];
-  total_count: number;
+items: User[];
+total_count: number;
 }
 
 export class ExampleHttpDao {
-  constructor(private usersService, private http: HttpClient) {}
+constructor(private usersService, private http: HttpClient) {}
 
-  getUsers(sort: string, order: string, page: number): Observable<UsersApi> {
-    return this.usersService.getUsers({
-      page: page + 1,
-      sort: sort,
-      direction: order
-    });
-  }
+getUsers(sort: string, order: string, page: number): Observable<UsersApi> {
+  return this.usersService.getUsers({
+    page: page + 1,
+    sort: sort,
+    direction: order
+  });
+}
 }

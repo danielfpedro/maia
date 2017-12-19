@@ -11,6 +11,7 @@ import { MatPaginatorIntlBr } from './mat-paginator-intl-br';
 import { MatPaginatorIntl } from '@angular/material';
 
 import { NgModule } from '@angular/core';
+import { MatTableModule } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { OverlayModule } from '@angular/cdk/overlay';
 import {
@@ -65,6 +66,7 @@ import {
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatTableModule,
     MatMenuModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,

@@ -21,3 +21,9 @@ $app-warn:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+
+
+// My Variables
+$margin: 40px;
+$padding: $margin;
+$overlay-opacity: 0.15;

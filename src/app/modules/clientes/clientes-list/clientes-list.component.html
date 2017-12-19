@@ -1,5 +1,52 @@
-<mat-toolbar color="primary">
-	<h3>Clientes</h3>
-	<div class="fill-remaining-space"></div>
+<mat-toolbar color="primary" class="margin-bottom">
+  <h3>Clientes</h3>
+  <div class="fill-remaining-space"></div>
 </mat-toolbar>
 
+<div class="mat-elevation-z3 box-margin">
+
+  <div class="padding-half content-right">
+    <button mat-button mat-raised-button color="primary" (click)="newDataService.openItemForm(null)">Novo Usuário</button>
+  </div>
+
+  <div style="position: relative">
+    <div class="overlay" *ngIf="dataTableService.isLoadingData">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+
+    <!-- CONTENT -->
+    <mat-table #table [dataSource]="dataTableService.dataSource" matSort>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let cliente">{{ cliente.name }}</mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="created">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
+        <mat-cell *matCellDef="let cliente">{{ cliente.created }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let cliente">
+          <button mat-icon-button [matMenuTriggerFor]="rowMenu" >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #rowMenu="matMenu" [overlapTrigger]="true" xPosition="before">
+            <button mat-menu-item> 
+              <mat-icon>mode_edit</mat-icon> Editar
+            </button>
+            <button mat-menu-item> 
+              <mat-icon>mode_edit</mat-icon> Remover
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [length]="dataTableService.resultsLength" [pageSize]="5"></mat-paginator>
+  </div>
+</div>

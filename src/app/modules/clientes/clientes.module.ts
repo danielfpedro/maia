@@ -16,6 +16,9 @@ import { ClientesListComponent } from './clientes-list/clientes-list.component';
 import { ClientesAddComponent } from './clientes-add/clientes-add.component';
 
 import { MaterialModule } from '../shared/material.module';
+import { MatTableModule } from '@angular/material';
+
+import { ClientesService } from './clientes.service';
 
 //import { BrowserModule } from '@angular/platform-browser';
 
@@ -47,7 +50,7 @@ const routes: Routes = [
     SharedModule,
     // MaterialModule
   ],
-  exports: [RouterModule],
+  exports: [RouterModule, MatTableModule],
   declarations: [
     // Layout
     DefaultLayoutComponent,
@@ -55,7 +58,11 @@ const routes: Routes = [
     ClientesListComponent,
     ClientesAddComponent
   ],
+  entryComponents: [
+    ClientesAddComponent
+  ],
   providers: [
+    ClientesService
   ]
 })
 export class ClientesModule { }
