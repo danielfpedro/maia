@@ -39,13 +39,6 @@ export class ClientesListComponent implements OnInit {
     this.sort.active = 'name';
     this.sort.direction = 'asc';
 
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    Observable.merge(this.sort.sortChange, this.newDataService.newItem)
-      .subscribe(() => {
-        this.paginator.pageIndex = 0;
-      });
-
-    this.dataTableService.loadData(this.clientesService.getClientes(this.sort.active, this.sort.direction, this.paginator.pageIndex));
+    this.dataTableService.loadData(this.clientesService.getClientes(), [this.sort.sortChange]);
   }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { HttpClient } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
@@ -10,13 +12,21 @@ export interface ClientesDataTable {
   total_count: number;
 }
 
+export class ClientesApi {
+  data: Cliente[];
+  total: number;
+}
+
 @Injectable()
 export class ClientesService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  getClientes(sort: string, direction: string, page: number): Observable<ClientesDataTable> {
-  	return Observable.of({items: [], total_count: 0});
+  // getClientes(sort: string, direction: string, page: number): Observable<any> {
+  getClientes(): Observable<ClientesApi> {
+    return this.http.get<ClientesApi>('http://localhost:8000/clientes');
   }
 
 }
