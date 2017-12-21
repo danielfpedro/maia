@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 /**
  * Fragments
  */
@@ -21,7 +23,9 @@ import { MainMenuComponent } from '../shared/main-menu/main-menu.component';
     BrowserAnimationsModule,
   	MaterialModule,
     FlexLayoutModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     MainMenuComponent,
@@ -33,7 +37,9 @@ import { MainMenuComponent } from '../shared/main-menu/main-menu.component';
     FlexLayoutModule,
     MainMenuComponent,
     NavbarComponent,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

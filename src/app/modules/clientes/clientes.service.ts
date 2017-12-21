@@ -25,8 +25,8 @@ export class ClientesService {
   ) { }
 
   // getClientes(sort: string, direction: string, page: number): Observable<any> {
-  getClientes(): Observable<ClientesApi> {
-    return this.http.get<ClientesApi>('http://localhost:8000/clientes');
+  getClientes(params?): Observable<ClientesApi> {
+    return this.http.get<ClientesApi>('http://localhost:8000/clientes', {params: params});
   }
 
 }

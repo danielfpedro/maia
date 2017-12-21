@@ -1,13 +1,30 @@
 <mat-toolbar color="primary" class="margin-bottom">
   <h3>Clientes</h3>
+  
   <div class="fill-remaining-space"></div>
+
+  <button mat-icon-button [matMenuTriggerFor]="optionsMenu" >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #optionsMenu="matMenu" [overlapTrigger]="true" xPosition="before">
+    <button mat-menu-item> 
+      <mat-icon>add</mat-icon> Adicionar Usuário
+    </button>
+  </mat-menu>
 </mat-toolbar>
 
-<div class="mat-elevation-z3 box-margin">
+<mat-card class="box-margin">
+  <form fxLayout="row" fxLayoutGap="40px" [formGroup]="filtersForm" (submit)="dataTableService.refresh.next()">
+    <mat-form-field fxLayout="column" fxLayoutAlign="center" fxFlex>
+      <input type="search" matInput placeholder="Nome ou Email" formControlName="q">
+    </mat-form-field>
+    <div fxLayout="column" fxLayoutAlign="center">
+      <button type="submit" mat-raised-button color="primary"><mat-icon>search</mat-icon> Pesquisar</button>
+    </div>
+  </form>
+</mat-card>
 
-  <div class="padding-half content-right">
-    <button mat-button mat-raised-button color="primary" (click)="newDataService.openItemForm(null)">Novo Usuário</button>
-  </div>
+<div class="mat-elevation-z3 box-margin">
 
   <div style="position: relative">
     <div class="overlay" *ngIf="dataTableService.isLoadingData">
@@ -17,19 +34,19 @@
     <!-- CONTENT -->
     <mat-table #table [dataSource]="dataTableService.dataSource" matSort>
 
-      <ng-container matColumnDef="name">
+      <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
       </ng-container>
       
-      <ng-container matColumnDef="created">
+      <ng-container matColumnDef="created_at">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
         <mat-cell *matCellDef="let cliente">{{ cliente.created_at }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let cliente">
+        <mat-cell *matCellDef="let cliente" class="content-right">
           <button mat-icon-button [matMenuTriggerFor]="rowMenu" >
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -47,6 +64,6 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-    <mat-paginator [length]="dataTableService.resultsLength" [pageSize]="5"></mat-paginator>
+    <mat-paginator [length]="dataTableService.resultsLength" [pageSize]="pageSize"></mat-paginator>
   </div>
 </div>
