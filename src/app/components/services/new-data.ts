@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
+// import { Subject } from 'rxjs/Subject';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
 
@@ -8,22 +8,19 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 export class NewDataService {
 
   modalWidth = '600px';
-  newItem: Subject<any>;
+  // newItem: Subject<any>;
   component: any;
 
   constructor(
     private dialog: MatDialog
   ) {
-    this.newItem = new Subject<any>();
+    // this.newItem = new Subject<any>();
   }
 
-  public openItemForm(id: number) {
+  public open(data = {}) {
     let dialogRef = this.dialog.open(this.component, {
       width: this.modalWidth,
-      data: {
-        id: id,
-        refreshTable: this.newItem
-      }
+      data: data
     });
   }
 

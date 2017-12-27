@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { NgForm } from '@angular/forms';
-
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { NgForm, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 import { MatSort, MatPaginator } from '@angular/material';
 
@@ -16,7 +14,8 @@ import { ClientesAddComponent } from '../clientes-add/clientes-add.component';
 // Services
 import { ClientesService } from '../clientes.service';
 import { NewDataService } from '../../../components/services/new-data';
-import { DataTableService } from '../../../components/services/data-table.service';
+
+import { DataTable } from '../../../components/services/data-table.service';
 
 @Component({
   selector: 'app-clientes-list',
@@ -29,58 +28,51 @@ export class ClientesListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
    
   filtersForm: FormGroup;
-
-  pageSize: number;
-  displayedColumns = ['nome', 'created_at', 'actions'];
-  filters: any;
+  dataTable: DataTable;
 
   constructor(
     public clientesService: ClientesService,
     public newDataService: NewDataService,
-    public dataTableService: DataTableService,
     private fb: FormBuilder,
-  ) { }
+  ) {}
 
   ngOnInit() {
 
     this.createForm();
 
-    this.sort.active = 'nome';
-    this.sort.direction = 'asc';
-
-    this.pageSize = 15;
-
+    // New Data info
     this.newDataService.component = ClientesAddComponent;
-    this.dataTableService.service = this.clientesService;
-    this.dataTableService.getDataMethodName = 'getClientes';
-    
-    this.dataTableService.getData= this.clientesService.getClientes({});
 
-    Observable.merge(this.paginator.page, this.sort.sortChange, this.dataTableService.refresh)
+    // Dta tabe info
+    this.dataTable = new DataTable(this.paginator, this.sort, ['nome', 'created_at', 'actions']);
+
+    // // Loading Data
+    Observable.merge(this.dataTable.paginator.page, this.dataTable.sort.sortChange, this.dataTable.fetchData)
       .startWith(null)
       .switchMap(() => {
-        this.dataTableService.isLoadingData = true;
+
+        this.dataTable.loadingData = true;
 
         let params = {
-          page: (this.paginator.pageIndex + 1),
-          page_size: this.pageSize,
-          sort_by: this.sort.active,
-          sort_direction: this.sort.direction
+          page: (this.dataTable.paginator.pageIndex + 1),
+          page_size: this.dataTable.pageSize,
+          sort_by: this.dataTable.sort.active,
+          sort_direction: this.dataTable.sort.direction
         };
-        console.log('Filters', this.filtersForm.value);
+
+        params = Object.assign(params, this.filtersForm.value);
 
         return this.clientesService.getClientes(params);
       })
       .map(response => {
-        this.dataTableService.isLoadingData = false;
-        this.dataTableService.resultsLength = response.total;
+        this.dataTable.loadingData = false;
+        this.dataTable.resultsLength = response.total;
+
         return response.data;
       })
       .subscribe(data => {
-        this.dataTableService.dataSource.data = data;
+        this.dataTable.datasource.data = data;
       });
-
-    // this.dataTableService.loadData(this.clientesService.getClientes(), [this.sort.sortChange, this.paginator.page]);
   }
 
   createForm(): void {

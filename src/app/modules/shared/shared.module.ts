@@ -15,6 +15,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
  */
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { MainMenuComponent } from '../shared/main-menu/main-menu.component';
+import { DataTableLoaderComponent } from '../shared/data-table-loader/data-table-loader.component';
+
+/**
+ * Services
+ */
+import { EnderecosService } from './enderecos.service';
 
 @NgModule({
   imports: [
@@ -29,7 +35,11 @@ import { MainMenuComponent } from '../shared/main-menu/main-menu.component';
   ],
   declarations: [
     MainMenuComponent,
-    NavbarComponent
+    NavbarComponent,
+    DataTableLoaderComponent
+  ],
+  providers: [
+    EnderecosService
   ],
   exports: [
     BrowserModule,
@@ -37,6 +47,7 @@ import { MainMenuComponent } from '../shared/main-menu/main-menu.component';
     FlexLayoutModule,
     MainMenuComponent,
     NavbarComponent,
+    DataTableLoaderComponent,
     RouterModule,
     FormsModule,
     ReactiveFormsModule

@@ -15,7 +15,6 @@ import { ClientesModule } from './modules/clientes/clientes.module';
 
 // Components
 import { NewDataService } from './components/services/new-data';
-import { DataTableService } from './components/services/data-table.service';
 
 @NgModule({
   imports: [
@@ -34,11 +33,10 @@ import { DataTableService } from './components/services/data-table.service';
     ClientesModule,
   ],
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   providers: [
     NewDataService,
-    DataTableService
   ],
   entryComponents: [
   ],

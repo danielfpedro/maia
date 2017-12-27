@@ -1,3 +1,119 @@
-<p>
-  clientes-add works!
-</p>
+<form [formGroup]="myForm" (submit)="save()">
+  
+  <h1 mat-dialog-title>Adicionar Cliente</h1>
+  <mat-divider></mat-divider>
+  <mat-dialog-content class="mat-typography" style="display: relative;">
+
+    <app-data-table-loader [loading]="isLoading"></app-data-table-loader>
+
+    <div class="form-section-title">
+      <h3>Dados Pessoais</h3>
+    </div>
+    <section fxLayout="row" fxLayoutGap="20px">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="*Nome" formControlName="nome">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input type="email" matInput placeholder="*Email" formControlName="email">
+      </mat-form-field>
+    </section>
+    <!-- ENDERECO -->
+    <section formGroupName="endereco" fxLayout="column">
+      
+      <div class="form-section-title">
+        <h3>Endereço</h3>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field fxFlex="50%">
+          <input matInput placeholder="CEP" formControlName="cep">
+        </mat-form-field>
+        <div>
+          <button type="button" mat-raised-button><mat-icon>search</mat-icon> Buscar</button>  
+        </div>
+        
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field>
+          <mat-select placeholder="Estado" formControlName="estado" [disabled]="!estados">
+            <mat-option>Selecione o Estado:</mat-option>
+            <mat-option *ngFor="let estado of estados" [value]="estado">
+              {{ estado.uf }} - {{ estado.nome }}
+            </mat-option>
+          </mat-select>
+          <mat-hint *ngIf="carregandoEstados">Carregando Estado, aguarde...</mat-hint>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Cidade" formControlName="cidade" [disabled]="cidades.length < 1">
+            <mat-option>Selecione a cidade:</mat-option>
+            <mat-option *ngFor="let cidade of cidades" [value]="cidade">
+              {{ cidade.nome }}
+            </mat-option>
+          </mat-select>
+          <mat-hint *ngIf="!estadoHasValue">Selecione o estado para carregar as Cidades</mat-hint>
+          <mat-hint *ngIf="carregandoCidades">Carregando Cidades, aguarde...</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="*Bairro" formControlName="bairro">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput placeholder="*Rua" formControlName="rua">
+        </mat-form-field>
+        <mat-form-field fxFlex="120px">
+          <input matInput placeholder="*Numero" formControlName="numero">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field>
+        <input matInput placeholder="Complemento" formControlName="complemento">
+      </mat-form-field>
+    </section>
+
+    <section fxLayout="column" class="mat-typography">
+
+      <div class="form-section-title">
+        <h3>Telefone(s)</h3>
+      </div>
+
+      <div formArrayName="telefones" fxLayout="column" fxLayoutGap="10px">
+        <ng-container formGroupName="telefones" *ngFor="let telefone of telefones.controls; let i=index" [formGroupName]="i">
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field >
+              <mat-select placeholder="Operadora" formControlName="operadora">
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let operadora of operadoras" [value]="operadora">
+                  {{ operadora.nome }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input matInput placeholder="Telefone" formControlName="telefone">
+            </mat-form-field>
+            <div>
+              <button type="button" mat-icon-button (click)="removeTelefone(i)" *ngIf="telefones.controls.length > 1">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="margin-bottom-half content-center">
+          <button type="button" mat-raised-button (click)="addTelefone()" [disabled]="telefones.controls.length >= maxTelefones">
+            <mat-icon>add</mat-icon>Adicionar telefone
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" style="justify-content: flex-end">
+    <button mat-dialog-close mat-button [disabled]="isLoading"> Cancelar</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="isLoading"> Salvar</button>
+  </mat-dialog-actions>
+
+</form>

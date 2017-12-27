@@ -3,67 +3,65 @@
   
   <div class="fill-remaining-space"></div>
 
-  <button mat-icon-button [matMenuTriggerFor]="optionsMenu" >
-    <mat-icon>more_vert</mat-icon>
+  <button mat-button (click)="newDataService.open()"> 
+    <mat-icon>add</mat-icon> Adicionar Usuário
   </button>
-  <mat-menu #optionsMenu="matMenu" [overlapTrigger]="true" xPosition="before">
-    <button mat-menu-item> 
-      <mat-icon>add</mat-icon> Adicionar Usuário
-    </button>
-  </mat-menu>
 </mat-toolbar>
 
-<mat-card class="box-margin">
-  <form fxLayout="row" fxLayoutGap="40px" [formGroup]="filtersForm" (submit)="dataTableService.refresh.next()">
-    <mat-form-field fxLayout="column" fxLayoutAlign="center" fxFlex>
-      <input type="search" matInput placeholder="Nome ou Email" formControlName="q">
-    </mat-form-field>
-    <div fxLayout="column" fxLayoutAlign="center">
-      <button type="submit" mat-raised-button color="primary"><mat-icon>search</mat-icon> Pesquisar</button>
-    </div>
-  </form>
-</mat-card>
+<div class="content-center">
+  <mat-card class="box-margin" fxFlex="60em">
+    <form fxLayout="row" fxLayoutGap="40px" [formGroup]="filtersForm" (submit)="dataTable.fetchData.next()">
+      <mat-form-field fxLayout="column" fxLayoutAlign="center" fxFlex>
+        <input type="search" matInput placeholder="Nome ou Email" formControlName="q">
+      </mat-form-field>
+      <div fxLayout="column" fxLayoutAlign="center">
+        <button type="submit" mat-raised-button color="primary"><mat-icon>search</mat-icon> Pesquisar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
 
-<div class="mat-elevation-z3 box-margin">
+<div class="content-center">
+  <div class="mat-elevation-z3 box-margin" fxFlex="60em">
 
-  <div style="position: relative">
-    <div class="overlay" *ngIf="dataTableService.isLoadingData">
-      <mat-spinner [diameter]="50"></mat-spinner>
-    </div>
+    <div style="position: relative">
 
-    <!-- CONTENT -->
-    <mat-table #table [dataSource]="dataTableService.dataSource" matSort>
+      <app-data-table-loader [loading]="dataTable.loadingData"></app-data-table-loader>
 
-      <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-        <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
-      </ng-container>
-      
-      <ng-container matColumnDef="created_at">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
-        <mat-cell *matCellDef="let cliente">{{ cliente.created_at }}</mat-cell>
-      </ng-container>
+      <!-- CONTENT -->
+      <mat-table #table [dataSource]="dataTable.datasource" matSort>
 
-      <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let cliente" class="content-right">
-          <button mat-icon-button [matMenuTriggerFor]="rowMenu" >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #rowMenu="matMenu" [overlapTrigger]="true" xPosition="before">
-            <button mat-menu-item> 
-              <mat-icon>mode_edit</mat-icon> Editar
+        <ng-container matColumnDef="nome">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.created_at }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let cliente" class="text-right">
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" >
+              <mat-icon>more_vert</mat-icon>
             </button>
-            <button mat-menu-item> 
-              <mat-icon>mode_edit</mat-icon> Remover
-            </button>
-          </mat-menu>
-        </mat-cell>
-      </ng-container>
+            <mat-menu #rowMenu="matMenu" [overlapTrigger]="true" xPosition="before">
+              <button mat-menu-item (click)="newDataService.open({id: cliente.id})"> 
+                <mat-icon>mode_edit</mat-icon> Editar
+              </button>
+              <button mat-menu-item> 
+                <mat-icon>clear</mat-icon> Deletar
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator [length]="dataTableService.resultsLength" [pageSize]="pageSize"></mat-paginator>
+        <mat-header-row *matHeaderRowDef="dataTable.displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dataTable.displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [length]="dataTable.resultsLength" [pageSize]="dataTable.pageSize"></mat-paginator>
+    </div>
   </div>
 </div>

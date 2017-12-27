@@ -1,8 +1,4 @@
-import { Injectable } from '@angular/core';
-
-import { MatDialog, MatDialogRef, MatSort, MatPaginator, MatTableDataSource, MAT_DIALOG_DATA} from '@angular/material';
-
-import { ClientesService } from '../../modules/clientes/clientes.service';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { Subject } from 'rxjs/Subject';
 
@@ -13,81 +9,38 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
-export class ClientesApi {
-  data: any[];
-  total: number;
-}
+export class DataTable {
 
-@Injectable()
-export class DataTableService {
+  // Paginator e Sort
+  paginator: MatPaginator;
+  sort: MatSort;
 
-  isLoadingData = false;
-  resultsLength = 0;
+  loadingData = false;      // Controla o loader na pagina
+  resultsLength = 0;        // O total de dados sem a paginação
+  pageSize = 15;             // Quantidade de items por pagina
 
-  paginator: any;
-  sort: any;
+  fetchData: Subject<any>;  // Ativar o reload dos dados
 
-  hasPaginator: boolean;
-  hasSort: boolean;
-  changers: any[];
+  displayedColumns: any[];
 
-  service: any;
-  getDataMethodName: any;
+  datasource = new MatTableDataSource();
 
-  refresh: Subject<any>;
-
-  dataSource = new MatTableDataSource();
-  getData: any;
-
-  constructor(
-    private clientesService: ClientesService
-  ) {
+  constructor(paginator: MatPaginator, sort: MatSort, displayedColumns: any[]) {
     
+    this.paginator = paginator;
+    this.sort = sort;
+
+    this.displayedColumns = displayedColumns;
+
     this.init();
-    
+
   }
 
   init(): void {
-    this.refresh = new Subject<any>();
-     // Observable.merge(this.sort.sortChange, this.newDataService.newItem)
-     //  .subscribe(() => {
-     //    this.paginator.pageIndex = 0;
-     //  });
+    this.fetchData = new Subject<any>();
 
-    // Observable.merge(...this.changers)
-    //   .startWith(null)
-    //   .switchMap(() => {
-    //     this.isLoadingData = true;
-    //     return this.getData.call();
-    //   })
-    //   .map(response => {
-    //     this.isLoadingData = false;
-    //     this.resultsLength = response.total;
-    //     return response.data;
-    //   })
-    //   .subscribe(data => {
-    //     this.dataSource.data = data;
-    //   });
-  }
-
-  loadData(getData: Observable<any>, changers): void {
-    
-    // changers.push(this.refresh);
-
-    // Observable.merge(...changers)
-    //   .startWith(null)
-    //   .switchMap(() => {
-    //     this.isLoadingData = true;
-    //     return getData;
-    //   })
-    //   .map(response => {
-    //     this.isLoadingData = false;
-    //     this.resultsLength = response.total;
-    //     return response.data;
-    //   })
-    //   .subscribe(data => {
-    //     this.dataSource.data = data;
-    //   });
+    this.sort.active = this.displayedColumns[0];
+    this.sort.direction = 'desc';
   }
 
 }

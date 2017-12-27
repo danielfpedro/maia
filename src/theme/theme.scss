@@ -36,8 +36,16 @@ body {
   flex: 1 1 auto;
 }
 
-.content-right {
+.text-right {
   text-align: right;
+}
+.content-center {
+  display: flex;
+  justify-content: center;
+  direction: column;
+}
+.content-right {
+  justify-content: flex-end;
 }
 
 .padding {
@@ -52,6 +60,17 @@ body {
 .box-margin {
   margin: 0 $margin $margin $margin;
 }
+.margin-top-half {
+  margin-top: $margin / 2;
+}
 .margin-bottom {
   margin-bottom: $margin;
+}
+
+.margin-bottom-half {
+  margin-bottom: $margin / 2;
+}
+
+.form-section-title{ 
+  margin-top: 20px;
 }
