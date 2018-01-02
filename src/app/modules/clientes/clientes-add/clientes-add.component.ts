@@ -20,12 +20,14 @@ import { Cidade } from '../../shared/models/cidade.model';
 })
 export class ClientesAddComponent implements OnInit {
 
-  isLoading: boolean = false;
+  sendingFormData: boolean = false;
   myForm: FormGroup;
   endereco: FormGroup;
 
   estados: Estado[] = [];
   cidades: Cidade[] = [];
+
+  selectedCity: number;
 
   estadoHasValue: boolean;
   carregandoCidades: boolean;
@@ -62,16 +64,16 @@ export class ClientesAddComponent implements OnInit {
 
     // Estados change para carregar cidades
     Observable.merge(this.myForm.get('endereco.estado').valueChanges)
-      .switchMap(estado => {
+      .switchMap(estadoId => {
         this.carregandoCidades = true;
-        this.estadoHasValue = (estado);
+        this.estadoHasValue = (estadoId);
 
         this.cidades = [];
 
-        if (!estado) {
+        if (!estadoId) {
           return Observable.of([]);
         }
-        return this.enderecosService.allCidadesByEstadoId(estado.id);
+        return this.enderecosService.allCidadesByEstadoId(estadoId);
       })
       .map(data => {
         this.carregandoCidades = false;
@@ -79,6 +81,9 @@ export class ClientesAddComponent implements OnInit {
       })
       .subscribe(cidades => {
         this.cidades = cidades;
+        if (this.selectedCity) {
+          this.myForm.get('endereco.cidade').setValue(this.selectedCity);
+        }
       });
   }
 
@@ -111,6 +116,19 @@ export class ClientesAddComponent implements OnInit {
     });
   }
 
+  completaEnderecoPorCep(): void {
+    console.log('Completa Endereço', this.myForm.get('endereco.cep').value);
+    this.enderecosService.enderecoByCep(this.myForm.get('endereco.cep').value)
+      .subscribe(data => {
+        console.log('Localidade', data);
+
+        this.selectedCity = data.cidade_id;
+        this.myForm.get('endereco.estado').setValue(data.estado_id);
+        this.myForm.get('endereco.bairro').setValue(data.bairro);
+        this.myForm.get('endereco.rua').setValue(data.rua);
+      });
+  }
+
   addTelefone(): void {
     this.telefones.push(this.createTelefone());
   }
@@ -122,7 +140,7 @@ export class ClientesAddComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.sendingFormData = true;
     // this.dialogRef.close();
   }
 

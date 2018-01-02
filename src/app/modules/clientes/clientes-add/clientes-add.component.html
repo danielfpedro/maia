@@ -4,7 +4,7 @@
   <mat-divider></mat-divider>
   <mat-dialog-content class="mat-typography" style="display: relative;">
 
-    <app-data-table-loader [loading]="isLoading"></app-data-table-loader>
+    <app-data-table-loader [loading]="sendingFormData"></app-data-table-loader>
 
     <div class="form-section-title">
       <h3>Dados Pessoais</h3>
@@ -26,10 +26,10 @@
 
       <div fxLayout="row" fxLayoutGap="20px">
         <mat-form-field fxFlex="50%">
-          <input matInput placeholder="CEP" formControlName="cep">
+          <input matInput placeholder="CEP" formControlName="cep" [imask]="{mask: '00000-000'}">
         </mat-form-field>
         <div>
-          <button type="button" mat-raised-button><mat-icon>search</mat-icon> Buscar</button>  
+          <button type="button" mat-raised-button (click)="completaEnderecoPorCep()" [disabled]="carregandoEstados || carregandoCidades"><mat-icon>search</mat-icon> Buscar</button>  
         </div>
         
       </div>
@@ -38,7 +38,7 @@
         <mat-form-field>
           <mat-select placeholder="Estado" formControlName="estado" [disabled]="!estados">
             <mat-option>Selecione o Estado:</mat-option>
-            <mat-option *ngFor="let estado of estados" [value]="estado">
+            <mat-option *ngFor="let estado of estados" [value]="estado.id">
               {{ estado.uf }} - {{ estado.nome }}
             </mat-option>
           </mat-select>
@@ -47,7 +47,7 @@
         <mat-form-field fxFlex>
           <mat-select placeholder="Cidade" formControlName="cidade" [disabled]="cidades.length < 1">
             <mat-option>Selecione a cidade:</mat-option>
-            <mat-option *ngFor="let cidade of cidades" [value]="cidade">
+            <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
               {{ cidade.nome }}
             </mat-option>
           </mat-select>
@@ -91,7 +91,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field fxFlex>
-              <input matInput placeholder="Telefone" formControlName="telefone">
+              <input matInput placeholder="Telefone" formControlName="telefone" [imask]="{mask: '(00) 00000-0000'}">
             </mat-form-field>
             <div>
               <button type="button" mat-icon-button (click)="removeTelefone(i)" *ngIf="telefones.controls.length > 1">
@@ -112,8 +112,8 @@
 
   </mat-dialog-content>
   <mat-dialog-actions fxLayout="row" style="justify-content: flex-end">
-    <button mat-dialog-close mat-button [disabled]="isLoading"> Cancelar</button>
-    <button type="submit" mat-raised-button color="primary" [disabled]="isLoading"> Salvar</button>
+    <button mat-dialog-close mat-button [disabled]="sendingFormData"> Cancelar</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="sendingFormData"> Salvar</button>
   </mat-dialog-actions>
 
 </form>

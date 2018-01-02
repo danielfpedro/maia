@@ -30,7 +30,7 @@ import { NewDataService } from './components/services/new-data';
     // Angular
     HttpClientModule,
     // App
-    ClientesModule,
+    ClientesModule
   ],
   declarations: [
     AppComponent

@@ -24,7 +24,9 @@
     "@angular/platform-browser": "^5.1.0",
     "@angular/platform-browser-dynamic": "^5.1.0",
     "@angular/router": "^5.1.0",
+    "angular-imask": "^1.0.0",
     "core-js": "^2.5.2",
+    "ng2-input-mask": "0.0.7",
     "rxjs": "^5.5.5",
     "zone.js": "^0.8.14"
   },

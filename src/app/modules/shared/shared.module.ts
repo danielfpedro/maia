@@ -22,6 +22,8 @@ import { DataTableLoaderComponent } from '../shared/data-table-loader/data-table
  */
 import { EnderecosService } from './enderecos.service';
 
+import {IMaskModule} from 'angular-imask';
+
 @NgModule({
   imports: [
   	CommonModule,
@@ -31,7 +33,8 @@ import { EnderecosService } from './enderecos.service';
     FlexLayoutModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IMaskModule
   ],
   declarations: [
     MainMenuComponent,
@@ -50,7 +53,8 @@ import { EnderecosService } from './enderecos.service';
     DataTableLoaderComponent,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IMaskModule
   ]
 })
 export class SharedModule { }
