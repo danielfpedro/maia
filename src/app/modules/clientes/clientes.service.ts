@@ -28,5 +28,14 @@ export class ClientesService {
   getClientes(params?): Observable<ClientesApi> {
     return this.http.get<ClientesApi>('http://localhost:8000/clientes', {params: params});
   }
+  get(id: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:8000/clientes/${id}/edit`);
+  }
+  save(payload: any) {
+    return this.http.post('http://localhost:8000/clientes', payload);
+  }
+  update(id: number, payload: any) {
+    return this.http.put(`http://localhost:8000/clientes/${id}`, payload);
+  }
 
 }

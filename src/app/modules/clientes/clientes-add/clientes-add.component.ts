@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 
 import { NgForm, FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -10,6 +10,7 @@ import 'rxjs/add/operator/debounceTime';
 
 // Services
 import { EnderecosService } from '../../shared/enderecos.service';
+import { ClientesService } from '../clientes.service';
 import { Estado } from '../../shared/models/estado.model';
 import { Cidade } from '../../shared/models/cidade.model';
 
@@ -20,14 +21,17 @@ import { Cidade } from '../../shared/models/cidade.model';
 })
 export class ClientesAddComponent implements OnInit {
 
+  @ViewChild('enderecoNumero') enderecoNumero: any;
+
   sendingFormData: boolean = false;
   myForm: FormGroup;
   endereco: FormGroup;
+  cidade: FormGroup;
+  estado: FormGroup;
 
+  cliente: any;
   estados: Estado[] = [];
   cidades: Cidade[] = [];
-
-  selectedCity: number;
 
   estadoHasValue: boolean;
   carregandoCidades: boolean;
@@ -45,6 +49,7 @@ export class ClientesAddComponent implements OnInit {
   ];
 
   constructor(
+    private clientesService: ClientesService,
     private enderecosService: EnderecosService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ClientesAddComponent>,
@@ -55,15 +60,25 @@ export class ClientesAddComponent implements OnInit {
   ngOnInit() {
     this.createForm();
 
+
     this.carregandoEstados = true;
     this.enderecosService.allEstados()
       .subscribe(response => {
         this.estados = response;
         this.carregandoEstados = false;
+
+        this.clientesService.get(this.data.id)
+          .subscribe(cliente => {
+            this.cliente = cliente;
+            console.log('CLIENTE', this.cliente);
+
+            this.myForm.patchValue(this.cliente);
+          });
+
       });
 
     // Estados change para carregar cidades
-    Observable.merge(this.myForm.get('endereco.estado').valueChanges)
+    Observable.merge(this.myForm.get('endereco.cidade.estado_id').valueChanges)
       .switchMap(estadoId => {
         this.carregandoCidades = true;
         this.estadoHasValue = (estadoId);
@@ -81,9 +96,6 @@ export class ClientesAddComponent implements OnInit {
       })
       .subscribe(cidades => {
         this.cidades = cidades;
-        if (this.selectedCity) {
-          this.myForm.get('endereco.cidade').setValue(this.selectedCity);
-        }
       });
   }
 
@@ -91,11 +103,13 @@ export class ClientesAddComponent implements OnInit {
     this.myForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', Validators.email],
-      ativo: [''],
       endereco: this.fb.group({
+        id: ['', Validators.required],
         cep: ['', Validators.required],
-        estado: ['', Validators.required],
-        cidade: ['', Validators.required],
+        cidade: this.fb.group({
+          id: ['', Validators.required],
+          estado_id: ['', Validators.required],
+        }),
         bairro: ['', Validators.required],
         rua: ['', Validators.required],
         numero: ['', Validators.required],
@@ -111,8 +125,9 @@ export class ClientesAddComponent implements OnInit {
 
   createTelefone(): FormGroup {
     return this.fb.group({
+      id: [''],
       operadora: [''],
-      telefone: ['', Validators.required]
+      numero: ['', Validators.required]
     });
   }
 
@@ -120,12 +135,13 @@ export class ClientesAddComponent implements OnInit {
     console.log('Completa Endereço', this.myForm.get('endereco.cep').value);
     this.enderecosService.enderecoByCep(this.myForm.get('endereco.cep').value)
       .subscribe(data => {
-        console.log('Localidade', data);
 
-        this.selectedCity = data.cidade_id;
-        this.myForm.get('endereco.estado').setValue(data.estado_id);
+        this.myForm.get('endereco.cidade.id').setValue(data.cidade_id);
+        this.myForm.get('endereco.cidade.estado_id').setValue(data.estado_id);
         this.myForm.get('endereco.bairro').setValue(data.bairro);
         this.myForm.get('endereco.rua').setValue(data.rua);
+
+        this.enderecoNumero.nativeElement.focus();
       });
   }
 
@@ -135,13 +151,17 @@ export class ClientesAddComponent implements OnInit {
   removeTelefone(index: number): void {
     this.telefones.removeAt(index);
   }
+
   save() {
     if (this.myForm.invalid) {
       return;
     }
 
-    this.sendingFormData = true;
-    // this.dialogRef.close();
+    let actionToTake = this.clientesService.save(this.myForm.value);
+    if (this.data.id) {
+      actionToTake = this.clientesService.update(this.data.id, this.myForm.value);
+    }
+    actionToTake.subscribe();
   }
 
 }

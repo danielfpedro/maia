@@ -25,6 +25,10 @@
       </div>
 
       <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field>
+          <input matInput placeholder="Id" formControlName="id">
+        </mat-form-field>
+
         <mat-form-field fxFlex="50%">
           <input matInput placeholder="CEP" formControlName="cep" [imask]="{mask: '00000-000'}">
         </mat-form-field>
@@ -34,26 +38,30 @@
         
       </div>
 
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field>
-          <mat-select placeholder="Estado" formControlName="estado" [disabled]="!estados">
-            <mat-option>Selecione o Estado:</mat-option>
-            <mat-option *ngFor="let estado of estados" [value]="estado.id">
-              {{ estado.uf }} - {{ estado.nome }}
-            </mat-option>
-          </mat-select>
-          <mat-hint *ngIf="carregandoEstados">Carregando Estado, aguarde...</mat-hint>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-          <mat-select placeholder="Cidade" formControlName="cidade" [disabled]="cidades.length < 1">
-            <mat-option>Selecione a cidade:</mat-option>
-            <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
-              {{ cidade.nome }}
-            </mat-option>
-          </mat-select>
-          <mat-hint *ngIf="!estadoHasValue">Selecione o estado para carregar as Cidades</mat-hint>
-          <mat-hint *ngIf="carregandoCidades">Carregando Cidades, aguarde...</mat-hint>
-        </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="20px" formGroupName="cidade">
+
+          <mat-form-field>
+            <mat-select placeholder="Estado" formControlName="estado_id" [disabled]="!estados">
+              <mat-option>Selecione o Estado:</mat-option>
+              <mat-option *ngFor="let estado of estados" [value]="estado.id">
+                {{ estado.uf }} - {{ estado.nome }}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="carregandoEstados">Carregando Estado, aguarde...</mat-hint>
+          </mat-form-field>
+        
+
+          <mat-form-field>
+            <mat-select placeholder="Cidade" formControlName="id" [disabled]="cidades.length < 1">
+              <mat-option>Selecione a cidade:</mat-option>
+              <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
+                {{ cidade.nome }}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="!estadoHasValue">Selecione o estado para carregar as Cidades</mat-hint>
+            <mat-hint *ngIf="carregandoCidades">Carregando Cidades, aguarde...</mat-hint>
+          </mat-form-field>
+
       </div>
 
       <div fxLayout="row" fxLayoutGap="20px">
@@ -64,7 +72,7 @@
           <input matInput placeholder="*Rua" formControlName="rua">
         </mat-form-field>
         <mat-form-field fxFlex="120px">
-          <input matInput placeholder="*Numero" formControlName="numero">
+          <input matInput placeholder="*Numero" formControlName="numero" #enderecoNumero>
         </mat-form-field>
       </div>
 
@@ -82,16 +90,21 @@
       <div formArrayName="telefones" fxLayout="column" fxLayoutGap="10px">
         <ng-container formGroupName="telefones" *ngFor="let telefone of telefones.controls; let i=index" [formGroupName]="i">
           <div fxLayout="row" fxLayoutGap="20px">
+            
+            <mat-form-field>
+              <input matInput placeholder="Id" formControlName="id">
+            </mat-form-field>
+
             <mat-form-field >
               <mat-select placeholder="Operadora" formControlName="operadora">
                 <mat-option>--</mat-option>
-                <mat-option *ngFor="let operadora of operadoras" [value]="operadora">
+                <mat-option *ngFor="let operadora of operadoras" [value]="operadora.nome">
                   {{ operadora.nome }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field fxFlex>
-              <input matInput placeholder="Telefone" formControlName="telefone" [imask]="{mask: '(00) 00000-0000'}">
+              <input matInput placeholder="Número" formControlName="numero" [imask]="{mask: '(00) 00000-0000'}">
             </mat-form-field>
             <div>
               <button type="button" mat-icon-button (click)="removeTelefone(i)" *ngIf="telefones.controls.length > 1">
