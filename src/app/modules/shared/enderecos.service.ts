@@ -17,12 +17,12 @@ export class EnderecosService {
   ) { }
 
   allEstados(): Observable<Estado[]> {
-    return this.http.get<Estado[]>('http://localhost:8000/estados');
+    return this.http.get<Estado[]>('http://localhost/maia_api/localidades/estados.json');
   }
   allCidadesByEstadoId(estadoId: number): Observable<Cidade[]> {
   	const params = new HttpParams().set('estado_id', estadoId.toString());
 
-    return this.http.get<Cidade[]>('http://localhost:8000/cidades/todas-por-estado-id', {params: params});
+    return this.http.get<Cidade[]>('http://localhost/maia_api/localidades/cidades/by/estado-id.json', {params: params});
   }
 
   enderecoByCep(cep: string): Observable<any> {

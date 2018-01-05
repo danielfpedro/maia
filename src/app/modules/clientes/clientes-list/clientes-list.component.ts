@@ -66,9 +66,9 @@ export class ClientesListComponent implements OnInit {
       })
       .map(response => {
         this.dataTable.loadingData = false;
-        this.dataTable.resultsLength = response.total;
+        this.dataTable.resultsLength = response.pagination.count;
 
-        return response.data;
+        return response.items;
       })
       .subscribe(data => {
         this.dataTable.datasource.data = data;

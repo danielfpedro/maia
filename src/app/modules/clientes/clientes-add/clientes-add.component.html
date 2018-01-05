@@ -25,9 +25,6 @@
       </div>
 
       <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field>
-          <input matInput placeholder="Id" formControlName="id">
-        </mat-form-field>
 
         <mat-form-field fxFlex="50%">
           <input matInput placeholder="CEP" formControlName="cep" [imask]="{mask: '00000-000'}">
@@ -38,7 +35,7 @@
         
       </div>
 
-      <div fxLayout="row" fxLayoutGap="20px" formGroupName="cidade">
+      <div fxLayout="row" fxLayoutGap="20px">
 
           <mat-form-field>
             <mat-select placeholder="Estado" formControlName="estado_id" [disabled]="!estados">
@@ -52,7 +49,7 @@
         
 
           <mat-form-field>
-            <mat-select placeholder="Cidade" formControlName="id" [disabled]="cidades.length < 1">
+            <mat-select placeholder="Cidade" formControlName="cidade_id" [disabled]="cidades.length < 1">
               <mat-option>Selecione a cidade:</mat-option>
               <mat-option *ngFor="let cidade of cidades" [value]="cidade.id">
                 {{ cidade.nome }}

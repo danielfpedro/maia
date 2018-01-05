@@ -67,18 +67,20 @@ export class ClientesAddComponent implements OnInit {
         this.estados = response;
         this.carregandoEstados = false;
 
-        this.clientesService.get(this.data.id)
-          .subscribe(cliente => {
-            this.cliente = cliente;
-            console.log('CLIENTE', this.cliente);
+        if (this.data.id) {
+          this.clientesService.get(this.data.id)
+            .subscribe(cliente => {
+              this.cliente = cliente;
+              console.log('CLIENTE', this.cliente);
 
-            this.myForm.patchValue(this.cliente);
-          });
+              this.myForm.patchValue(this.cliente);
+            });
+        }
 
       });
 
     // Estados change para carregar cidades
-    Observable.merge(this.myForm.get('endereco.cidade.estado_id').valueChanges)
+    Observable.merge(this.myForm.get('endereco.estado_id').valueChanges)
       .switchMap(estadoId => {
         this.carregandoCidades = true;
         this.estadoHasValue = (estadoId);
@@ -104,12 +106,10 @@ export class ClientesAddComponent implements OnInit {
       nome: ['', Validators.required],
       email: ['', Validators.email],
       endereco: this.fb.group({
-        id: ['', Validators.required],
+        // id: ['', Validators.required],
         cep: ['', Validators.required],
-        cidade: this.fb.group({
-          id: ['', Validators.required],
-          estado_id: ['', Validators.required],
-        }),
+        cidade_id: ['', Validators.required],
+        estado_id: ['', Validators.required],
         bairro: ['', Validators.required],
         rua: ['', Validators.required],
         numero: ['', Validators.required],
@@ -136,8 +136,8 @@ export class ClientesAddComponent implements OnInit {
     this.enderecosService.enderecoByCep(this.myForm.get('endereco.cep').value)
       .subscribe(data => {
 
-        this.myForm.get('endereco.cidade.id').setValue(data.cidade_id);
-        this.myForm.get('endereco.cidade.estado_id').setValue(data.estado_id);
+        this.myForm.get('endereco.cidade_id').setValue(data.cidade_id);
+        this.myForm.get('endereco.estado_id').setValue(data.estado_id);
         this.myForm.get('endereco.bairro').setValue(data.bairro);
         this.myForm.get('endereco.rua').setValue(data.rua);
 

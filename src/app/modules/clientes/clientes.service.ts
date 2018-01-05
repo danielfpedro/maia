@@ -25,17 +25,17 @@ export class ClientesService {
   ) { }
 
   // getClientes(sort: string, direction: string, page: number): Observable<any> {
-  getClientes(params?): Observable<ClientesApi> {
-    return this.http.get<ClientesApi>('http://localhost:8000/clientes', {params: params});
-  }
-  get(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:8000/clientes/${id}/edit`);
+  getClientes(params?): Observable<any> {
+    return this.http.get<any>('http://localhost/maia_api/clientes.json', {params: params});
   }
   save(payload: any) {
-    return this.http.post('http://localhost:8000/clientes', payload);
+    return this.http.post('http://localhost/maia_api/clientes.json', payload);
+  }
+  get(id: number): Observable<any> {
+    return this.http.get<any>(`http://localhost/maia_api/clientes/edit/${id}.json`);
   }
   update(id: number, payload: any) {
-    return this.http.put(`http://localhost:8000/clientes/${id}`, payload);
+    return this.http.patch(`http://localhost/maia_api/clientes/edit/${id}.json`, payload);
   }
 
 }
